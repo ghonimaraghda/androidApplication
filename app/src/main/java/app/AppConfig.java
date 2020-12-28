@@ -6,4 +6,7 @@ public class AppConfig {
 
     // Server user register url
     public static String URL_REGISTER = "http://192.168.1.2/android_login_api/register.php";
+
+    // Server cart adding url
+    public static String URL_CART = "http://192.168.1.2/android_login_api/cart.php";
 }

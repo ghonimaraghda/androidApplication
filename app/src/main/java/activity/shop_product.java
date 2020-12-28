@@ -1,11 +1,14 @@
 package activity;
 
-public class shop_product {
+import java.util.Comparator;
+
+public class shop_product  {
     private int shop_product_ID;
     private int shop_ID;
     private int product_ID;
     private int price;
     private String special_offers;
+
 
 
     public shop_product(int shop_product_ID, int shop_ID, int product_ID, int price, String special_offers) {
@@ -35,4 +38,15 @@ public class shop_product {
     public String getSpecial_offers() {
         return special_offers;
     }
+
+
+
+    public static final Comparator<shop_product> BY_TITLE_PRICE = new Comparator<shop_product>() {
+        @Override
+        public int compare(shop_product o1, shop_product o2) {
+            return o1.getPrice()-o2.getPrice();
+        }
+    };
+
+
 }

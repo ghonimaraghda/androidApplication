@@ -11,6 +11,7 @@ import java.util.HashMap;
 
 public class SQLiteHandler extends SQLiteOpenHelper {
 
+
     private static final String TAG = SQLiteHandler.class.getSimpleName();
 
     // All Static variables
@@ -23,6 +24,10 @@ public class SQLiteHandler extends SQLiteOpenHelper {
     // Login table name
     private static final String TABLE_USER = "user";
 
+    //cart table name
+    private static final String TABLE_CART = "cart";
+
+
     // Login Table Columns names
     private static final String KEY_ID = "id";
     private static final String KEY_NAME = "name";
@@ -31,6 +36,13 @@ public class SQLiteHandler extends SQLiteOpenHelper {
     private static final String KEY_NUMBER = "number";
     private static final String KEY_UID = "uid";
     private static final String KEY_CREATED_AT = "created_at";
+
+    // cart Table Columns names
+    private static final String KEY_CART_ID = "id";
+    private static final String KEY_SHOPNAME = "shopName";
+    private static final String KEY_PRODUCTNAME = "productName";
+    private static final String KEY_PRICE = "Price";
+    private static final String KEY_USERID = "user_ID";
 
     public SQLiteHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -45,6 +57,13 @@ public class SQLiteHandler extends SQLiteOpenHelper {
                 + KEY_CREATED_AT + " TEXT," + KEY_ADDRESS + " TEXT," + KEY_NUMBER + "TEXT" + ")";
         db.execSQL(CREATE_LOGIN_TABLE);
 
+        String CREATE_CART_TABLE = "CREATE TABLE " + TABLE_CART + "("
+                + KEY_CART_ID + " INTEGER PRIMARY KEY," + KEY_SHOPNAME + " TEXT,"
+                + KEY_PRODUCTNAME + " TEXT UNIQUE," + KEY_PRICE + " TEXT," + KEY_USERID + "TEXT"
+                + ")";
+        db.execSQL(CREATE_CART_TABLE);
+
+
         Log.d(TAG, "Database tables created");
     }
 
@@ -53,6 +72,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if existed
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CART);
 
         // Create tables again
         onCreate(db);
@@ -80,6 +100,26 @@ public class SQLiteHandler extends SQLiteOpenHelper {
     }
 
     /**
+     * Storing cart details in database
+     * */
+    public void addCart(String shopName, String productName, String Price,String user_ID) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_SHOPNAME,shopName ); // Name
+        values.put(KEY_PRODUCTNAME, productName); // Email
+        values.put(KEY_PRICE, Price); // Email
+        values.put(KEY_USERID, user_ID);
+
+
+        // Inserting Row
+        long id = db.insert(TABLE_CART, null, values);
+        db.close(); // Closing database connection
+
+        Log.d(TAG, "New cart inserted into sqlite: " + id);
+    }
+
+    /**
      * Getting user data from database
      * */
     public HashMap<String, String> getUserDetails() {
@@ -97,6 +137,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
             user.put("created_at", cursor.getString(4));
             user.put("address", cursor.getString(5));
             user.put("number", cursor.getString(6));
+
         }
         cursor.close();
         db.close();
@@ -105,6 +146,33 @@ public class SQLiteHandler extends SQLiteOpenHelper {
 
         return user;
     }
+
+    /**
+     * Getting cart data from database
+     * */
+    public HashMap<String, String> getCartDetails() {
+        HashMap<String, String> user = new HashMap<String, String>();
+        String selectQuery = "SELECT  * FROM " + TABLE_CART;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        // Move to first row
+        cursor.moveToFirst();
+        if (cursor.getCount() > 0) {
+            user.put("shopName", cursor.getString(1));
+            user.put("productName", cursor.getString(2));
+            user.put("Price", cursor.getString(3));
+            user.put("user_ID", cursor.getString(4));
+
+        }
+        cursor.close();
+        db.close();
+        // return user
+        Log.d(TAG, "Fetching cart from Sqlite: " + user.toString());
+
+        return user;
+    }
+
 
     /**
      * Re crate database Delete all tables and create them again
@@ -116,6 +184,31 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         db.close();
 
         Log.d(TAG, "Deleted all user info from sqlite");
+    }
+
+    /**
+     * Re crate database Delete all tables and create them again
+     * */
+    public void deleteCarts() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        // Delete All Rows
+        db.delete(TABLE_CART, null, null);
+        db.close();
+
+        Log.d(TAG, "Deleted all cart info from sqlite");
+    }
+    //delete item from cart
+    public int deleteData(int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+          return db.delete(TABLE_CART,"cart_ID=?",new String[]{String.valueOf(id)});
+
+
+    }
+    //retrieve uid
+    public Cursor alldata(){
+        SQLiteDatabase db= this.getWritableDatabase();
+        Cursor cursor=db.rawQuery("select * from "+TABLE_USER,null);
+        return cursor;
     }
 
 }

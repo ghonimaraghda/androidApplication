@@ -65,7 +65,8 @@ public class ListActivityAdaptor extends RecyclerView.Adapter<ListActivityAdapto
             itemView.setOnClickListener(this);
         }
         @Override
-        public void onClick( View v) {
+        public void onClick( View v)
+        {
             listener.OnClick(v,getAdapterPosition());
         }
     }

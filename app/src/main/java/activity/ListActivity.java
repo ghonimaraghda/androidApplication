@@ -30,6 +30,7 @@ public class ListActivity extends AppCompatActivity {
     List<product> productList;
     public ListActivityAdaptor.RecyclerViewClickListener listener;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +60,8 @@ public class ListActivity extends AppCompatActivity {
                                 product product=new product(id,product_name,description,image_url);
                                 productList.add(product);
                             }
+
+
                             setOnClickListener();
                             adaptor=new ListActivityAdaptor(ListActivity.this,productList,listener);
                             recyclerView.setAdapter(adaptor);
@@ -85,10 +88,13 @@ public class ListActivity extends AppCompatActivity {
             public void OnClick(View v, int position) {
                 Intent intent= new Intent(getApplicationContext(),ListActivity2.class);
                 intent.putExtra("product",productList.get(position).getProduct_ID());
+                intent.putExtra("productname",productList.get(position).getproduct_name());
                 startActivity(intent);
             }
         };
     }
+
+
 
 
 }

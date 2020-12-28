@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/product_ID"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="activity.ListActivity3">
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView3"
+        android:layout_width="match_parent"
+        android:layout_height="501dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="0dp"
+        android:padding="4dp"
+        android:scrollbars="vertical" />
+
+    <Button
+        android:id="@+id/productList"
+        android:layout_width="270dp"
+        android:layout_height="80dp"
+        android:layout_marginLeft="28dp"
+        android:layout_marginTop="3dp"
+        android:text="product List" />
+
+    <TextView
+        android:id="@+id/cartUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="28dp"
+        android:layout_marginTop="90dp"
+        android:text="TextView" />
+
+
+</RelativeLayout>

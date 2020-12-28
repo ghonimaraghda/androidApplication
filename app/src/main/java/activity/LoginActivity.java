@@ -36,6 +36,9 @@ public class LoginActivity extends Activity {
     private ProgressDialog pDialog;
     private SessionManager session;
     private SQLiteHandler db;
+    public static String mail;
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,6 +62,8 @@ public class LoginActivity extends Activity {
 
         // Check if user is already logged in or not
         if (session.isLoggedIn()) {
+
+
             // User is already logged in. Take him to main activity
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
@@ -71,6 +76,7 @@ public class LoginActivity extends Activity {
             public void onClick(View view) {
                 String email = inputEmail.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
+                mail=email;
 
                 // Check for empty data in the form
                 if (!email.isEmpty() && !password.isEmpty()) {
@@ -134,8 +140,6 @@ public class LoginActivity extends Activity {
                         String name = user.getString("name");
                         String email = user.getString("email");
                         String created_at = user.getString("created_at");
-
-
 
 
                         // Inserting row in users table

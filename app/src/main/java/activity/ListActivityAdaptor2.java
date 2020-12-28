@@ -19,11 +19,15 @@ public class ListActivityAdaptor2 extends RecyclerView.Adapter<ListActivityAdapt
     public List<shop> shopList;
     String stringLatitude;
     String stringLongitude;
+    public RecyclerViewClickListener listener;
+    double distance;
 
-    public ListActivityAdaptor2(Context mCtx, List<shop_product> shop_productList,List<shop> shopList) {
+
+    public ListActivityAdaptor2(Context mCtx, List<shop_product> shop_productList, List<shop> shopList, RecyclerViewClickListener listener) {
         this.mCtx = mCtx;
         this.shop_productList = shop_productList;
         this.shopList = shopList;
+        this.listener=listener;
     }
 
     @NonNull
@@ -33,6 +37,7 @@ public class ListActivityAdaptor2 extends RecyclerView.Adapter<ListActivityAdapt
         View view= inflater.inflate(R.layout.recycler_item2, null);
         ListActivityAdaptor2.ListActivityViewHolder2 holder= new ListActivityAdaptor2.ListActivityViewHolder2(view);
         return holder;
+
     }
 
     @Override
@@ -56,7 +61,10 @@ public class ListActivityAdaptor2 extends RecyclerView.Adapter<ListActivityAdapt
         }
         double latitude2= Double. valueOf(stringLatitude) ;
         double longitude2= Double. valueOf(stringLongitude) ;
-        double distance= distance(latitude1,longitude1,latitude2,latitude2);
+        distance= distance(latitude1,longitude1,latitude2,latitude2);
+
+
+
 
 
 
@@ -72,8 +80,9 @@ public class ListActivityAdaptor2 extends RecyclerView.Adapter<ListActivityAdapt
 
     }
 
-    class ListActivityViewHolder2 extends RecyclerView.ViewHolder{
+    class ListActivityViewHolder2 extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView shop_name,price,specialOffer,distance;
+
 
         public ListActivityViewHolder2(@NonNull View itemView) {
             super(itemView);
@@ -81,6 +90,13 @@ public class ListActivityAdaptor2 extends RecyclerView.Adapter<ListActivityAdapt
             price=itemView.findViewById(R.id.price);
             specialOffer=itemView.findViewById(R.id.specialOffer);
             distance=itemView.findViewById(R.id.distance);
+            itemView.setOnClickListener(this);
+
+        }
+
+        @Override
+        public void onClick(View v) {
+            listener.OnClick(v,getAdapterPosition());
         }
     }
     public double distance(double lat1, double lon1, double lat2, double lon2) {
@@ -102,6 +118,10 @@ public class ListActivityAdaptor2 extends RecyclerView.Adapter<ListActivityAdapt
 
     private double rad2deg(double rad) {
         return (rad * 180.0 / Math.PI);
+    }
+
+    public interface RecyclerViewClickListener{
+        void OnClick(View v,int position);
     }
 
 
